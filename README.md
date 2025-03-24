@@ -1,6 +1,11 @@
+<blockquote align="center">
+<p><br><strong>nest-template</strong><br><a href="https://apifox.com/apidoc/shared-0b3d30a8-c14b-450a-a4d2-d2567da3a7c6"><strong>Apifox -></strong></a></p>
+</blockquote>
+
 ## 项目设置
+
 ```bash
-# install dependencies  
+# install dependencies
 $ pnpm install
 
 # development
@@ -12,7 +17,9 @@ $ pnpm run start:dev
 # production mode
 $ pnpm run start:prod
 ```
+
 ## CLI 命令
+
 ```bash
 # generate module
 $ nest g module name
@@ -25,6 +32,7 @@ $ nest g service name
 ```
 
 ## 配置
+
 ```typescript
 // jwt 配置 config/jwt.config.ts
 import { JwtModuleOptions } from '@nestjs/jwt';
