@@ -6,9 +6,11 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { TestService } from './test.service';
 import { TestType } from './test.dto';
+import { AuthGuard } from '../guards/jwt-auth.guard';
 
 /**
  * 控制器 总是属于模块
@@ -23,21 +25,25 @@ export class TestController {
   // 被@Injectable装饰的类,可以通过 constructor 注入依赖关系
   constructor(private readonly testService: TestService) {}
 
+  @UseGuards(AuthGuard)
   @Get()
   getTest(): object {
     return this.testService.getTest();
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   addTest(@Body() body: TestType): object {
     return this.testService.addTest(body);
   }
 
+  @UseGuards(AuthGuard)
   @Put()
   changeTest(@Body() body: TestType): object {
     return this.testService.changeTest(body);
   }
 
+  @UseGuards(AuthGuard)
   @Delete()
   deleteTest(@Query() query: number): object {
     return this.testService.deleteTest(Number(query['id']));

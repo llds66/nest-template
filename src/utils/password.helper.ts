@@ -1,6 +1,5 @@
 import * as bcrypt from 'bcryptjs';
 
-
 export class PasswordHelper {
   private static readonly saltRounds = 10;
 
