@@ -16,19 +16,20 @@ export class LoginService {
 
   //   登录
   async login(body: UserType): Promise<object> {
-    const { id, account, password } = body;
-    const res = await this.userRepository.findOneBy({ account });
+    const { account, password } = body;
+    const res: User | null = await this.userRepository.findOneBy({ account });
+    const user_id = res?.id;
     if (res !== null) {
       const isMatch = await PasswordHelper.comparePassword(
         password,
         res.password,
       );
       if (isMatch) {
-        const token = this.jwtService.sign({ id, account });
+        const token = this.jwtService.sign({ id: user_id, account });
         return {
           code: 200,
           message: '登录成功',
-          token,
+          token: `Bearer ${token}`,
         };
       }
       return {

@@ -6,6 +6,7 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { TestService } from './test.service';
@@ -20,31 +21,41 @@ import { AuthGuard } from '../guards/jwt-auth.guard';
  * @Req() 提供了对底层平台（默认为 Express）的请求对象（request）的访问方式
  * 开箱即用的 @Body() 或 @Query()
  * */
-@Controller('auth/test')
+@Controller('auth')
 export class TestController {
   // 被@Injectable装饰的类,可以通过 constructor 注入依赖关系
   constructor(private readonly testService: TestService) {}
 
   @UseGuards(AuthGuard)
-  @Get()
-  getTest(): object {
+  @Get('user')
+  getUser(@Req() req: any): object {
+    return {
+      message: '获取成功',
+      data: req.user,
+    };
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('test')
+  getTest(@Req() req: any): object {
+    console.log(req);
     return this.testService.getTest();
   }
 
   @UseGuards(AuthGuard)
-  @Post()
+  @Post('test')
   addTest(@Body() body: TestType): object {
     return this.testService.addTest(body);
   }
 
   @UseGuards(AuthGuard)
-  @Put()
+  @Put('test')
   changeTest(@Body() body: TestType): object {
     return this.testService.changeTest(body);
   }
 
   @UseGuards(AuthGuard)
-  @Delete()
+  @Delete('test')
   deleteTest(@Query() query: number): object {
     return this.testService.deleteTest(Number(query['id']));
   }

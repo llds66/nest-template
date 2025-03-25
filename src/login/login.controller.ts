@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, Req } from '@nestjs/common';
 import { UserType } from './login.dto';
 import { LoginService } from './login.service';
+import { Request } from 'express';
 
 @Controller('common')
 export class LoginController {

@@ -3,6 +3,8 @@ import {
   CanActivate,
   ExecutionContext,
   UnauthorizedException,
+  HttpException,
+  HttpStatus,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
@@ -17,11 +19,21 @@ import { JwtConfig } from '../config/jwt.config';
 export class AuthGuard implements CanActivate {
   constructor(private jwtService: JwtService) {}
 
+  /**
+   * 验证用户是否有Token
+   * 拦截请求并从 Authorization 头中提取JWT令牌。
+   * 如果没有找到令牌，则会抛出 自定义的错误响应，阻止访问该路由。
+   * @param context
+   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = this.extractTokenFromHeader(request);
     if (!token) {
-      throw new UnauthorizedException();
+      // 自定义的错误响应
+      throw new HttpException(
+        { code: 2, message: '认证失败' },
+        HttpStatus.UNAUTHORIZED,
+      );
     }
     try {
       const payload: any = await this.jwtService.verifyAsync(token, {
